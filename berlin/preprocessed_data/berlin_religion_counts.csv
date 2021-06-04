@@ -1,0 +1,13 @@
+"name","n_buddhist","n_hindu","n_jewish","n_muslim","n_protestant","n_catholic"
+"Reinickendorf",1,0,0,5,26,15
+"Charlottenburg-Wilmersdorf",2,1,4,4,30,12
+"Treptow-Köpenick",0,0,0,0,27,7
+"Pankow",2,1,1,1,21,9
+"Neukölln",0,2,0,15,32,9
+"Lichtenberg",2,0,0,0,16,6
+"Marzahn-Hellersdorf",0,0,0,0,9,3
+"Spandau",3,0,0,5,22,10
+"Steglitz-Zehlendorf",0,0,0,0,41,10
+"Mitte",2,0,1,20,35,8
+"Friedrichshain-Kreuzberg",3,0,1,9,25,8
+"Tempelhof-Schöneberg",1,0,1,6,30,12

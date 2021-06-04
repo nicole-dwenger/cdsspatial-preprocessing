@@ -1,0 +1,34 @@
+"name","n_buddhist","n_hindu","n_jewish","n_muslim","n_sikh","n_protestant","n_catholic"
+"Kingston upon Thames",0,0,0,1,1,23,6
+"Croydon",1,1,2,3,0,54,7
+"Bromley",0,0,1,0,0,39,11
+"Hounslow",0,0,0,0,1,29,10
+"Ealing",1,6,1,9,9,45,11
+"Havering",0,0,1,0,0,25,6
+"Hillingdon",0,0,0,1,0,29,5
+"Harrow",0,5,3,1,0,28,8
+"Brent",1,8,2,9,0,40,9
+"Barnet",0,2,21,3,0,48,17
+"Lambeth",0,1,0,3,0,59,8
+"Southwark",1,1,0,7,1,70,13
+"Lewisham",0,1,1,1,0,32,3
+"Greenwich",0,0,0,1,0,28,6
+"Bexley",0,0,0,1,1,24,3
+"Enfield",0,0,2,3,1,38,5
+"Waltham Forest",0,2,1,12,1,47,6
+"Redbridge",0,0,4,1,1,23,6
+"Sutton",0,0,1,1,0,25,8
+"Richmond upon Thames",0,0,1,0,0,38,8
+"Merton",2,2,0,4,0,29,6
+"Wandsworth",1,1,0,6,1,43,11
+"Hammersmith and Fulham",0,0,0,4,0,27,10
+"Kensington and Chelsea",0,0,1,2,1,31,12
+"Westminster",3,0,7,5,0,49,19
+"Camden",1,0,3,6,0,42,12
+"Tower Hamlets",1,1,4,16,1,30,13
+"Islington",2,0,0,5,0,37,12
+"Hackney",0,0,8,9,0,40,5
+"Haringey",0,1,2,3,0,30,5
+"Newham",0,5,0,9,3,38,4
+"Barking and Dagenham",0,0,0,1,1,30,8
+"City of London",0,0,1,0,0,44,1
