@@ -2,13 +2,13 @@
 title: "London Preprocessing"
 author: "Nicole Dwenger and Orla Mallon"
 date: "2021/06/01"
-output: pdf_document
+output: html_document
 editor_options: 
   chunk_output_type: console
 ---
 
 ## Information
-This document pre-processing spatial and attribute data of LONDON for the final project of Spatial Analytics. Data for the following variables will be processed in the following: 
+This document pre-processing spatial and attribute data of LONDON for the final project of Spatial Analytics. Data for the following variables will be processed in the following:
 
 1. Borough Shapes (spatial, vector)
 2. Population and Age data (attribute)
@@ -192,12 +192,8 @@ POI = rbind(c("train_waterloo", 51.503325560796156, -0.11230510142714892),
             c("train_liverpoolstreet", 51.51889845379851, -0.08148031676972306),
             c("train_victoria", 51.49537726830846, -0.14388717259162917),
             c("train_londonbridge", 51.504416056960665, -0.08478633026290418),
-            c("air_heathrow",
-51.47004901261934, 
--0.45423112847256897),
-            c("air_gatwick",
-51.1537159154631, 
--0.1820950880013889),
+            c("air_heathrow", 51.47004901261934, -0.45423112847256897),
+            c("air_gatwick", 51.1537159154631, -0.1820950880013889),
             c("air_stansted", 51.88591866726579, 0.23890872742011673),
             c("air_londonca", 51.50464333476912, 0.04963601576625392),
             c("air_southend", 51.57031595153878, 0.6924333715894126),
