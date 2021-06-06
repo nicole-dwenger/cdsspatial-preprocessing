@@ -11,10 +11,10 @@ editor_options:
 This document pre-processing spatial and attribute data of BERLIN for the final project of Spatial Analytics. Data for the following variables will be processed in the following: 
 
 1. Borough Shapes (spatial, vector)
-2. Population and Age data (attribute)
+2. Population and Age data (only attribute)
 3. Country of Origin (pre-processed in `berlin_dot_density.rmd`)
-4. Religious Institutions (pre-processed in `berlin_osm_culture_religion.Rmd`)
-5. Cultural Institutions (pre-processed in `berlin_osm_culture_religion.Rmd`)
+4. Places of Worship (pre-processed in `berlin_osm_culture_religion.Rmd`)
+5. Museums, Theatres & Nightlife (pre-processed in `berlin_osm_culture_religion.Rmd`)
 6. Travel Time (spatial, vector and attribute)
 7. Crime (attribute)
 8. Rent (attribute)
@@ -49,7 +49,7 @@ sf_fisbroker <- function(x) {
 Loading shapefiles for the Bezirke boundaries of Berlin, as vector data of polygons. The raw data is in 4326, so we transform it into a projected CRS (ETRS89 / UTM zone 33N, EPSG:25833), which fits for Germany, to extract centroids of each of the polygons (Bezirke) and area measurements. Lastly, we extract the relevant columns, and transform both the coordinates of the polygons and the coordinates of the centroids back to EPSG 4326, as this is the required CRS for Leaflet (which will be used in the shiny app) and calculate the area.
 
 - Data source: https://daten.odis-berlin.de/de/dataset/bezirksgrenzen/
-```{r}
+```{r bezirke}
 # Loading the shapefiles of the Berliner Bezirke
 berlin_raw = st_read(here("berlin", "raw_data", "bezirke", "bezirksgrenzen.shp"))
 # Checking the CRS: unprojected, 4326
@@ -96,7 +96,7 @@ bezirk_names = berlin_geo$name
 This preprocessed population and age data. First, we load a data frame, which contains population counts for age ranges of 10 years for 31.12.2019, for each borough. We sum all the population values to get a total count for each borough, and calculate percentages using the total and age-range population values. Lastly, we calculate a mean value using the middle value of each of the age ranges. 
 
 - Data source: Einwohnerregisterstatistik, 31.12.2019: https://www.statistik-berlin-brandenburg.de/webapi/jsf/tableView/tableView.xhtml 
-```{r}
+```{r population}
 
 # Loading the age data as xlsx file, while specifying which columns to use
 age_raw = read_excel(here("berlin", "raw_data", "age_population", "table_2021-04-30_16-43-38.xlsx"), col_names = FALSE, skip = 10)
@@ -149,22 +149,22 @@ age$age_mean = as.numeric(age$age_mean)
 
 ## 3. Country of Origin
 This data was processed in berlin_dot_density.rmd. Here only the preprocessed data is loaded.
-```{r}
+```{r origin}
 # Loading preprocessed data file
 origin = read.csv(here("berlin", "preprocessed_data", "berlin_percentages.csv"))
 colnames(origin)[1] = "name"
 ```
 
-## 4. Religious Instituions
+## 4. Places of Worship
 This data was extraced and processed in a script called berlin_osm_culture_religion.Rmd.
-```{r}
+```{r religion}
 # Loading the preprocessed religion count data
 religion = read.csv(here("berlin", "preprocessed_data", "berlin_religion_counts.csv"))
 ```
 
-## 5. Culture Institutions
+## 5. Museums, Theatres and Nightlife
 This data was extraced and processed in a script called berlin_osm_culture_religion.Rmd.
-```{r}
+```{r culture}
 # Loading the preprocessed culture count data
 culture = read.csv(here("berlin", "preprocessed_data", "berlin_culture_counts.csv"))
 ```
@@ -240,8 +240,8 @@ travel_time = readRDS(here("berlin", "preprocessed_data", "berlin_travel_time.rd
 ## 7. Crime
 Here we simply load data from the Berlin Police, select those for 2020, and save them in a dataframe.
 
-- Data source: https://www.berlin.de/polizei/service/kriminalitaetsatlas/
-```{r}
+- Data source: https://daten.berlin.de/datensaetze/kriminalitätsatlas-berlin
+```{r crime}
 # Loading the raw crime data as xlsx file and selecting relevant columns
 crime_raw <- read_excel(here("berlin", "raw_data", "crime", "Fallzahlen&HZ 2012-2020.xlsx"), sheet = "Fallzahlen_2020", skip = 3)
 
@@ -260,9 +260,9 @@ crime = crime_bezirke %>%
 Here, we download data from a server called FISBROKER. A function to load data, is defined above, so we are using it here, to get the rent data for 2019 for the Prognoseräume (which is a smaller division of the Berlin Bezirke). Thus, we also get the shapefiles for the Prognoseräume, and then match the Prognoseräume with the Bezirke to calcualte a median for each of the Bezirke.  
 
 - Data source:
-  - Miete per m2, 2019, fisbroker
-  - Prognoseräume: fisbroker
-```{r}
+  - Miete per m2, 2018, fisbroker: https://fbinter.stadt-berlin.de/fb/berlin/service_intern.jsp?id=s_wohnatlas2019@senstadt&type=WFS
+  - Prognoseräume: fisbroker: https://fbinter.stadt-berlin.de/fb/berlin/service_intern.jsp?id=s_lor_plan@senstadt&type=WFS 
+```{r rent}
 # Loading the rent data from Fisbroker, online service
 # This data is not on the "Bezirke"-Level, but is divided into smaller areas, but we'll convert them to be on the right level
 miete_raw = sf_fisbroker("s_wohnatlas2019")
@@ -282,6 +282,7 @@ miete$miete[miete$miete == 0] = NA
 
 # Getting the shapefiles of the Progoseräume
 prog_raw = sf_fisbroker("s_lor_prog")
+colnames(prog_raw)
 # Setting correct CRS (info from from website)
 st_crs(prog_raw) = 25833
 # Getting the info of which Progrnoseraum belongs to which Bezirk, to match it up 
@@ -298,38 +299,41 @@ rent = left_join(miete, prog, "prog_name") %>%
 The aim was a value of mean percentage of green cover for each of the Bezirke Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of green cover on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered Berlin were found and loaded. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (green cover percentage) for each of the Bezirke Note that here some of the code is commented out, to be able to knit the document. 
 
 - Data source: https://land.copernicus.eu/pan-european/high-resolution-layers/forests/tree-cover-density/status-maps/tree-cover-density-2018
-```{r}
+```{r treecover, warning=FALSE}
 # Loading the relevant raster file which covers Berlin
-treecover_raw = raster(here("berlin", "raw_data", "treecover", "TCD_2018_010m_E45N32_03035_v020.tif"))
+treecover_raw = raster::raster(here("berlin", "raw_data", "treecover", "TCD_2018_010m_E45N32_03035_v020.tif"))
 
 # Getting the CRS of the raster file: EPSG 3035
-crs_3035 = crs(treecover_raw)
-# Trannsforming the berlin geo to the crs
+crs_3035 = crs(treecover_raw, asText=TRUE)
+# Transforming the berlin geo to the crs
 berlin_3035 = st_transform(berlin_geo, crs = crs_3035)
 
 # Plotting the raster and geometry data
-plot(treecover_raw)
+plot(treecover_raw, col=rev(terrain.colors(100)));
 plot(berlin_3035$geometry, add = T)
 
 # Masking the raster data to only keep Berlin area
 # tree_mask = mask(treecover_raw, berlin_3035)
-# Saving rds
-# saveRDS(tree_mask, "berlin/preprocessed_data/berlin_tree_mask.rds")
-# This has been done, but here the mask is loaded for plotting
-tree_mask = readRDS(here("berlin", "preprocessed_data", "berlin_tree_mask.rds"))
+# Saving masked raster 
+# writeRaster(tree_mask, "berlin/raw_data/treecover/masked_treecover.tif")
+# Read masked raster for plotting and knitting 
+tree_mask = raster(here("berlin", "raw_data", "treecover", "masked_treecover.tif"))
 # Plotting
-plot(tree_mask)
+plot(tree_mask, col=rev(terrain.colors(100)));
 plot(berlin_3035$geometry, add = T)
 
 # Cropping the raster data to the polygons / bezirke of Berlin
 # tree_cropped = crop(tree_mask, berlin_3035)
-# Saving rds 
-# saveRDS(tree_cropped, "berlin/preprocessed_data/berlin_tree_cropped.rds")
-# This has been done, but here the mask is loaded for plotting
-tree_cropped = readRDS(here("berlin", "preprocessed_data", "berlin_tree_cropped.rds"))
+# Save cropped raster 
+# writeRaster(tree_cropped, "berlin/raw_data/treecover/cropped_treecover.tif")
+# Read raster for plotting and knitting
+tree_cropped = raster(here("berlin", "raw_data", "treecover", "cropped_treecover.tif"))
 # Plotting
-plot(tree_cropped)
+plot(tree_cropped, col=rev(terrain.colors(100)));
 plot(berlin_3035$geometry, add = T)
+
+# Print information about raster that will be used for extracting values
+tree_cropped
 
 # Extract the values, using the mean, commented out for knitting
 # bezirke_treecover = raster::extract(x=tree_cropped, y=berlin_3035, fun=mean)
@@ -348,38 +352,41 @@ treecover = readRDS(here("berlin", "preprocessed_data", "berlin_tree_extracted.r
 The aim was a value of mean percentage of imperviousness for each of the Bezrike Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of imperviousness on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered Berlin were found and loaded. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (imperviousness percentage) for each of the Bezirke. Note that here some of the code is commented out, to be able to knit the document. 
 
 - Data source: https://land.copernicus.eu/pan-european/high-resolution-layers/imperviousness/status-maps/imperviousness-density-2018
-```{r}
+```{r imperv, warning=FALSE}
 # Loading the relevant raster files which cover Berlin
 imperviousness_raw = raster(here("berlin", "raw_data", "imperviousness", "IMD_2018_010m_E45N32_03035_v020.tif"))
 
 # Getting the CRS of the raster file: EPSG 3035
-crs_3035 = crs(imperviousness_raw)
+crs_3035 = crs(imperviousness_raw, asText=TRUE)
 # Transforming the berlin geo to this crs
 berlin_3035 = st_transform(berlin_geo, crs = crs_3035)
 
 # Plotting the raster and geometry data
-plot(imperviousness_raw)
+plot(imperviousness_raw, col=rev(heat.colors(100)));
 plot(berlin_3035$geometry, add = T)
 
 # Masking the raster data to only keep Berlin area
 # imperv_mask = mask(imperviousness_raw, berlin_3035)
-# Saving rds
-# saveRDS(imperv_mask, "berlin/preprocessed_data/berlin_imperv_mask.rds")
-# Read the rds for plotting 
-imperv_mask = readRDS(here("berlin", "preprocessed_data", "berlin_imperv_mask.rds"))
+# Saving masked raster 
+# writeRaster(imperv_mask, "berlin/raw_data/imperviousness/masked_imperv.tif")
+# Read masked raster for plotting and knitting 
+imperv_mask = raster(here("berlin", "raw_data", "imperviousness", "masked_imperv.tif"))
 # Plotting
-plot(imperv_mask)
-plot(berlin_3035$geometry, add = T)
+plot(imperv_mask, col=rev(heat.colors(100)));
+plot(berlin_3035$geometry, add=TRUE)
 
 # Cropping the raster data to the polygons / bezirke of Berlin
 # imperv_cropped = crop(imperv_mask, berlin_3035)
-# Saving rds
-# saveRDS(imperv_cropped, "berlin/preprocessed_data/berlin_imperv_cropped.rds")
-# Read the rds for plotting 
-imperv_cropped = readRDS(here("berlin", "preprocessed_data", "berlin_imperv_cropped.rds"))
+# Saving cropped raster
+# writeRaster(imperv_cropped, "berlin/raw_data/imperviousness/cropped_imperv.tif")
+# Read cropped raster for plotting and knitting 
+imperv_cropped = raster(here("berlin", "raw_data", "imperviousness", "cropped_imperv.tif"))
 # Plotting
-plot(imperv_cropped)
-plot(berlin_3035$geometry, add = T)
+plot(imperv_cropped, col=rev(heat.colors(100)));
+plot(berlin_3035$geometry, add=TRUE)
+
+# Print information of the raster layer which will be used for extracting
+imperv_cropped
 
 # Extract the values, using the mean, commented out for knitting
 # bezirke_imperv = raster::extract(x=imperv_cropped, y=berlin_3035, fun=mean)
@@ -395,7 +402,7 @@ imperviousness = readRDS(here("berlin", "preprocessed_data", "berlin_imperv_extr
 ```
 
 ## FINAL: Joining everything together
-```{r}
+```{r join}
 # Joining all varaibles together
 berlin = left_join(berlin_geo, age, by = "name") %>%                  
          mutate(population_dens_ha = (total_population/area_ha)) %>%    

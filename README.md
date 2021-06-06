@@ -11,11 +11,11 @@ The scripts were run on macOS 10.14.6, using R Version 3.6.2 and RStudio 1.2.503
 
 ### OSM - Culture and Religion Scripts 
 The scripts `london/london_osm_culture_religion.Rmd` and `berlin/berlin_osm_culture_religion.Rmd`, sample locations of cultural places (Museums, Theates and Nighlife) and religious places (Places of Worship) for London and Berlin. The output are coordinates of the extracted locations, for cultural locations stored in `london/preprocessed_data/london_culture_locations.csv` / `london/preprocessed_data/london_culture_locations.rds` and `berlin/preprocessed_data/berlin_culture_locations.csv` / `london/preprocessed_data/berlin_culture_locations.rds`. Counts of locations per borough or district are also stored in data frames in `london/preprocessed_data/culture_counts.csv` / `london/preprocessed_data/culture_counts.csv` and `berlin/preprocessed_data/culture_counts.csv` / `berlin/preprocessed_data/culture_counts.rds`, and corresponding files for religious locations. 
-The scripts were run on maxOS 10.16, using R Version 4.0.2 and RStudio 1.3.1073. 
+The scripts were run on macOS 11.4, using R Version 4.0.2 and RStudio 1.3.1073. 
 
 ### Preprocessing 
 The scripts `london/london_preprocessing.Rmd` and `berlin/berlin_preprocessing.Rmd` preprocesses as set of variables, for which raw data is stored in `london/raw_data/` and `berlin/raw_data/`. Further, it loads all the preprocessed data of the Dot Density and OSM scripts. In a last step, it joins all preprocessed data to a common dataframe, stored in `london/preprocessed_data/london.csv`/ `london/preprocessed_data/london.rds` and `berlin/preprocessed_data/berlin.csv`/ `berlin/preprocessed_data/berlin.rds`.
-The scripts were run on maxOS 10.16, using R Version 4.0.2 and RStudio 1.3.1073. 
+The scripts were run on macOS 11.4, using R Version 4.0.2 and RStudio 1.3.1073. 
 
 ### Credits 
 This script contains data from the following sources: 

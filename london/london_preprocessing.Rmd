@@ -13,8 +13,8 @@ This document pre-processing spatial and attribute data of LONDON for the final 
 1. Borough Shapes (spatial, vector)
 2. Population and Age data (attribute)
 3. Ethnicity (extracted and pre processed in `london_dot_density.rmd`)
-4. Religious Institutions (extracted and pre processed in `london_osm_culture_religion.Rmd`)
-5. Cultural Institutions (extracted and pre processed in `london_osm_culture_religion.Rmd`)
+4. Places of Worship (extracted and pre processed in `london_osm_culture_religion.Rmd`)
+5. Museums, Theatres and Nightlife (extracted and pre processed in `london_osm_culture_religion.Rmd`)
 6. Travel Time (spatial, vector and attribute)
 7. Crime (attribute)
 8. Rent (attribute)
@@ -142,14 +142,14 @@ This data was processed in london_dot_density.rmd. Here only the preprocessed da
 ethnicity = read.csv(here("london", "preprocessed_data", "london_percentages.csv"))
 ```
 
-## 4. Religious Instituions
+## 4. Places of Worship
 This data was extracted from OSM and preprocessd in the script london_osm_culture_religion.Rmd.
 ```{r religion}
 # Loading the preprocessed religion count data
 religion = read.csv(here("london", "preprocessed_data", "london_religion_counts.csv"))
 ```
 
-## 5. Culture Institutionns
+## 5. Museums, Theatres and Nightlife
 This data was extracted from OSM and preprocessd in the script london_osm_culture_religion.Rmd.
 ```{r culture}
 # Loading the preprocessed culture count data
@@ -283,7 +283,7 @@ The aim was a value of mean percentage of green cover for each of the boroughs. 
 - Data Source: https://land.copernicus.eu/pan-european/high-resolution-layers/forests/tree-cover-density/status-maps/tree-cover-density-2018
 ```{r treecover, warning=FALSE}
 # Loading all rasters of the london area
-# raster1 = raster(here("london", "raw_data", "treecover", "TCD_2018_010m_E36N32_03035_v020.tif"))
+#raster1 = raster(here("london", "raw_data", "treecover", "TCD_2018_010m_E36N32_03035_v020.tif"))
 # raster2 = raster(here("london", "raw_data", "treecover", "TCD_2018_010m_E36N31_03035_v020.tif"))
 # raster3 = raster(here("london", "raw_data", "treecover", "TCD_2018_010m_E35N32_03035_v020.tif"))
 # raster4 = raster(here("london", "raw_data", "treecover", "TCD_2018_010m_E35N31_03035_v020.tif"))
@@ -303,28 +303,31 @@ crs_3035 = crs(treecover_raw, asText=TRUE)
 london_3035 = st_transform(london_geo, crs = crs_3035)
 
 # Quick plot to see what it looks like
-plot(treecover_raw);
+plot(treecover_raw, col=rev(terrain.colors(100)))
 plot(london_3035$geometry, add=TRUE)
 
 # Masking raster data to only keep the London area
-# tree_mask = raster::mask(tree_cover, london_3035)
-# Save as rds 
-# saveRDS(tree_mask, "london/preprocessed_data/london_tree_mask.rds")
-# This has been done, but here the mask is loaded for plotting
-tree_mask = readRDS(here("london", "preprocessed_data", "london_tree_mask.rds"))
+#tree_mask = raster::mask(treecover_raw, london_3035)
+# Save masked raster file
+#raster::writeRaster(tree_mask, "london/raw_data/treecover/masked_treecover.tif")
+# Read raster for plotting and knitting 
+tree_mask = raster(here("london", "raw_data", "treecover", "masked_treecover.tif"))
 # Plot
-plot(tree_mask)
+plot(tree_mask, col=rev(terrain.colors(100)))
 plot(london_3035$geometry, add=TRUE)
 
 # Cropping to only keep the London boroughs
-# tree_cropped = raster::crop(tree_mask, london_3035)
-# Save as rds
-# saveRDS(tree_cropped, "london/preprocessed_data/london_tree_cropped.rds")
-# This has been done, but here the cropped data is loaded for plotting
-tree_cropped = readRDS(here("london", "preprocessed_data", "london_tree_cropped.rds"))
+#tree_cropped = raster::crop(tree_mask, london_3035)
+# Save as raster file 
+#raster::writeRaster(tree_cropped, "london/raw_data/treecover/cropped_treecover.tif")
+# Load raster file for plotting and knitting 
+tree_cropped = raster(here("london", "raw_data", "treecover", "cropped_treecover.tif"))
 # Plot
-plot(tree_cropped)
+plot(tree_cropped, col=rev(terrain.colors(100)));
 plot(london_3035$geometry, add=TRUE)
+
+# Print info of data from which values will be extracted
+tree_cropped
 
 # Extract mean tree cover values for each of the boroughs, the followin is only commented out for knitting
 # boroughs_treecover = raster::extract(x=tree_cropped$merged_treecover, y=london_3035, fun=mean, na.rm=T)
@@ -346,7 +349,7 @@ The aim was a value of mean percentage of imperviousness for each of the borough
 - Source: https://land.copernicus.eu/pan-european/high-resolution-layers/imperviousness/status-maps/imperviousness-density-2018
 ```{r imperviousness, warning=FALSE}
 # Loading all rasters in london area
-# raster1 = raster(here("london", "raw_data", "imperviousness", "IMD_2018_010m_E35N31_03035_v020.tif"))
+# raster1 = raster::raster(here("london", "raw_data", "imperviousness", "IMD_2018_010m_E35N31_03035_v020.tif", ))
 # raster2 = raster(here("london", "raw_data", "imperviousness", "IMD_2018_010m_E35N32_03035_v020.tif"))
 # raster3 = raster(here("london", "raw_data", "imperviousness", "IMD_2018_010m_E36N31_03035_v020.tif"))
 # raster4 = raster(here("london", "raw_data", "imperviousness", "IMD_2018_010m_E36N32_03035_v020.tif"))
@@ -357,35 +360,37 @@ The aim was a value of mean percentage of imperviousness for each of the borough
 # Loading merged raster
 london_imperv = raster(here("london", "raw_data", "imperviousness", "merged_imperv.tif"))
 crs(london_imperv) #GRS80, LAEA
-plot(london_imperv)
 
-# Transform london geometry to the same crs
+# Transform london geometry to the raster crs
 crs_3035 = crs(london_imperv, asText=TRUE)
 london_3035 = st_transform(london_geo, crs = crs_3035)
 
 # Quick plot to see how it looks
-plot(london_imperv);
+plot(london_imperv, col=rev(heat.colors(100)));
 plot(london_3035$geometry, add=TRUE)
 
 # Mask to only London area (commented out for knitting)
 # imperv_mask = mask(london_imperv, london_3035)
-# Save rds
-# saveRDS(imperv_mask, "london/preprocessed_data/london_imperv_mask.rds")
-# This has been done, but here the mask is loaded for plotting
-imperv_mask = readRDS(here("london", "preprocessed_data", "london_imperv_mask.rds"))
+# Save as raster 
+# writeRaster(imperv_mask, "london/raw_data/imperviousness/masked_imperv.tif")
+# Read raster for plotting and knitting
+imperv_mask = raster(here("london", "raw_data", "imperviousness", "masked_imperv.tif"))
 # Plot
-plot(imperv_mask);
+plot(imperv_mask, col=rev(heat.colors(100)));
 plot(london_3035$geometry, add=TRUE)
 
 # Crop to only have London area (commented out for knitting)
 # imperv_cropped = crop(imperv_mask, london_3035)
-# Save rds
-# saveRDS(imperv_cropped, "london/preprocessed_data/london_imperv_cropped.rds")
-# This has been done, but here the mask is loaded for plotting
-imperv_cropped = readRDS(here("london", "preprocessed_data", "london_imperv_cropped.rds"))
+# Save as raster 
+# writeRaster(imperv_cropped, "london/raw_data/imperviousness/cropped_imperv.tif")
+# Read raster for plotting and knitting
+imperv_cropped = raster(here("london", "raw_data", "imperviousness", "cropped_imperv.tif"))
 # Plot
-plot(imperv_cropped);
+plot(imperv_cropped, col=rev(heat.colors(100)));
 plot(london_3035$geometry, add=TRUE)
+
+# Print info of data from which values will be extracted
+imperv_cropped
 
 # Extract values for each of the boroughs, mean value, to add them to the final data later (commented out for knitting)
 # boroughs_imperv = raster::extract(imperv_cropped, london_3035, fun = mean)
