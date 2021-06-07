@@ -261,7 +261,7 @@ Here, we download data from a server called FISBROKER. A function to load data, 
 
 - Data source:
   - Miete per m2, 2018, fisbroker: https://fbinter.stadt-berlin.de/fb/berlin/service_intern.jsp?id=s_wohnatlas2019@senstadt&type=WFS
-  - Prognoseräume: fisbroker: https://fbinter.stadt-berlin.de/fb/berlin/service_intern.jsp?id=s_lor_plan@senstadt&type=WFS 
+  - Prognoseräume: fisbroker: https://fbinter.stadt-berlin.de/fb/berlin/service_intern.jsp?id=s_lor_prog@senstadt&type=WFS 
 ```{r rent}
 # Loading the rent data from Fisbroker, online service
 # This data is not on the "Bezirke"-Level, but is divided into smaller areas, but we'll convert them to be on the right level

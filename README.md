@@ -1,4 +1,8 @@
-# Preprocessing of Data for Final Project of Spatial Analytics 
+# Spatial Analytics: Data Preprocessig for Finding Home :house:
+
+[Description](#descripton) | [Content](#content) | [Data](#data) | [Reproducability](reproducability) | [Credits and References](#credits-and-references) | [License](#license) | [Contact](#contact)
+
+---
 
 ## Description
 This repository contains scripts and data, used for preprocessing spatial and attribute data for the boroughs in London and Bezirke in Berlin. The preprocessed data is used as input for a Shiny App, which can be found under the following link: 
