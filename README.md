@@ -8,7 +8,7 @@
 This repository contains scripts and data, used for pre processing spatial and attribute data for the boroughs in London and Bezirke in Berlin. The preprocessed data is used as input for a Shiny App, which can be found under the following link: 
 https://cds-spatial.shinyapps.io/finding-home/ 
 
-## Contents
+## Content
 This repository contains several corresponding scripts for pre processing data of London and Berlin, which are stored in their corresponding directories. However, scripts the scripts for the two cities fulfill similar functions, as described below: 
 
 ### Dot Density Scripts 
@@ -72,7 +72,7 @@ Retrieved May 2021, through FIS-Broker, from https://fbinter.stadt-berlin.de/fb/
 - © European Union, Copernicus Land Monitoring Service, European Environment Agency (EEA) (2018a). High Resolution Layer: Imperviousness Density (IMD) 2018 [Data Set]. Retrieved May 2021, from https://land.copernicus.eu/pan-european/high-resolution-layers/imperviousness/statusmaps/imperviousness-density-2018?tab=metadata. Licensed under Copernicus data and information policy Regulation (EU).
 - © European Union, Copernicus Land Monitoring Service, European Environment Agency (EEA) (2018b). High Resolution Layer: Tree Cover Density (TCD) 2018 [Data Set]. Retrieved from May 2021, from https://land.copernicus.eu/pan-european/high-resolution-layers/forests/tree-cover-denity/status-maps/tree-cover-density-2018?tab=mapview. Licensed under Copernicus data and information policy Regulation (EU)
 - Google (n.d.). [Google Maps coordinates for defined PoI]. Retrieved 1 June 2021 from https://www.google.de/maps.
-- OpenStreetMap contributors. (2021) Data of Places of Worship, Museums, Theatres and Nightlife
+- OpenStreetMap contributors. (2021) Data of Places of Worship, Museums, Theaters and Nightlife
 [Data Sets from 2021]. Retrieved May 2021. Licensed under Open Data Commons Open Database License. 
 
 ### License 
