@@ -117,6 +117,8 @@ ethnic_data <- merge(ethnic_data, ethnic_data_percentages, by = "name", sort = F
 Shapefiles of smaller geographical areas, necessary for generating the dots coordinates. 
 ```{r}
 # --- Load in the output areas and rename column ---
+
+test <- st_read("london/raw_data/ethnicity/OA_2011_London_gen_MHW.shp")
 OA_shapefile<- st_read("london/raw_data/ethnicity/OA_2011_London_gen_MHW.shp") %>% select(output_area_code = OA11CD)
 
 
@@ -132,9 +134,9 @@ __randomround__ = A function which helps to soften the threshold of 100 people =
 
 credit: Jens von Bergmann https://github.com/mountainMath/dotdensity/blob/master/R/dot-density.R
               
-__count_dots__ = A function which generates how many dots should be created for each ethnicity, in each output area. The output is dataframe with a column for each ethnicity and a row for each output area, holding the number of dots which should be plotted for each. 
+__count_dots__ = A function which generates how many dots should be created for each ethnicity, in each output area. The output is a dataframe with a column for each ethnicity and a row for each output area, holding the number of dots which should be plotted for each. 
              
-__generate_dots__ = A function which generates random coordinates for the dot, within the specified geographical area. Here, we use the smallest area shapefiles available, meaning that even though the coordinates are randomly generated, they should reflect the ethnicity of the area to an accurate degree.
+__generate_dots__ = A function which generates random coordinates for the dots, within the specified geographical area. Here, we use the smallest area shapefiles available, meaning that even though the coordinates are randomly generated using st_sample(), they should reflect the ethnicity of the area to an accurate degree.
                 
 ```{r}
 # --- randomround ---
@@ -167,7 +169,6 @@ generate_dots <- function(district_dots, sf_object) {
                            ~ st_sample(sf_object, size = district_dots[,.x], type = "random") %>% 
                              st_cast("POINT") %>% 
                              st_coordinates() %>% 
-                             st_transform(4326) %>% 
                              as_tibble() %>% 
                              setNames(c("lon","lat")) %>%
                              mutate(ethnicity = .x)) %>% 
@@ -195,7 +196,7 @@ for(Boroughname in unique(ethnic_data$name)){
 
 ```
 
-### 2.3 Transform the coordinates into the 4362 CRS 
+### 2.3 Transform the coordinates into the 4326 CRS 
 ```{r eval = FALSE}
 # --- Make dataframe into an sf object (by combining lon and lat into a geometry column) --- 
 london_df <- st_as_sf(london_df, coords = c("lon", "lat"), crs= 27700)

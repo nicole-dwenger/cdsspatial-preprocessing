@@ -477,7 +477,15 @@ ethnic_data &lt;- merge(ethnic_data, ethnic_data_percentages, by = &quot;name&qu
 <h3>1.6 Load in the London output area shapefiles</h3>
 <p>Shapefiles of smaller geographical areas, necessary for generating the dots coordinates.</p>
 <pre class="r"><code># --- Load in the output areas and rename column ---
-OA_shapefile&lt;- st_read(&quot;london/raw_data/ethnicity/OA_2011_London_gen_MHW.shp&quot;) %&gt;% select(output_area_code = OA11CD)</code></pre>
+
+test &lt;- st_read(&quot;london/raw_data/ethnicity/OA_2011_London_gen_MHW.shp&quot;)</code></pre>
+<pre><code>## Reading layer `OA_2011_London_gen_MHW' from data source `/Users/Orla/Desktop/Shiny/london/raw_data/ethnicity/OA_2011_London_gen_MHW.shp' using driver `ESRI Shapefile'
+## Simple feature collection with 25053 features and 17 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: 503574.2 ymin: 155850.8 xmax: 561956.7 ymax: 200933.6
+## CRS:            27700</code></pre>
+<pre class="r"><code>OA_shapefile&lt;- st_read(&quot;london/raw_data/ethnicity/OA_2011_London_gen_MHW.shp&quot;) %&gt;% select(output_area_code = OA11CD)</code></pre>
 <pre><code>## Reading layer `OA_2011_London_gen_MHW' from data source `/Users/Orla/Desktop/Shiny/london/raw_data/ethnicity/OA_2011_London_gen_MHW.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 25053 features and 17 fields
 ## geometry type:  MULTIPOLYGON
@@ -495,8 +503,8 @@ ethnic_data &lt;- left_join(ethnic_data, OA_shapefile) %&gt;% st_as_sf()</code><
 <h3>2.1 Defining functions</h3>
 <p><strong>randomround</strong> = A function which helps to soften the threshold of 100 people = 1 dot. This function randomly rounds the data so that if a group has over 50 people, but is not quite 100, sometimes it will be generated as a dot as the number will be randomly rounded up instead of down. This is preferred over a simple rounding or hard threshold, which can often lead to systematic bias against minority groups.</p>
 <p>credit: Jens von Bergmann <a href="https://github.com/mountainMath/dotdensity/blob/master/R/dot-density.R" class="uri">https://github.com/mountainMath/dotdensity/blob/master/R/dot-density.R</a></p>
-<p><strong>count_dots</strong> = A function which generates how many dots should be created for each ethnicity, in each output area. The output is dataframe with a column for each ethnicity and a row for each output area, holding the number of dots which should be plotted for each.</p>
-<p><strong>generate_dots</strong> = A function which generates random coordinates for the dot, within the specified geographical area. Here, we use the smallest area shapefiles available, meaning that even though the coordinates are randomly generated, they should reflect the ethnicity of the area to an accurate degree.</p>
+<p><strong>count_dots</strong> = A function which generates how many dots should be created for each ethnicity, in each output area. The output is a dataframe with a column for each ethnicity and a row for each output area, holding the number of dots which should be plotted for each.</p>
+<p><strong>generate_dots</strong> = A function which generates random coordinates for the dots, within the specified geographical area. Here, we use the smallest area shapefiles available, meaning that even though the coordinates are randomly generated using st_sample(), they should reflect the ethnicity of the area to an accurate degree.</p>
 <pre class="r"><code># --- randomround ---
 #Function for rounding data to soften density threshold 
 random_round &lt;- function(x) {
@@ -527,7 +535,6 @@ generate_dots &lt;- function(district_dots, sf_object) {
                            ~ st_sample(sf_object, size = district_dots[,.x], type = &quot;random&quot;) %&gt;% 
                              st_cast(&quot;POINT&quot;) %&gt;% 
                              st_coordinates() %&gt;% 
-                             st_transform(4326) %&gt;% 
                              as_tibble() %&gt;% 
                              setNames(c(&quot;lon&quot;,&quot;lat&quot;)) %&gt;%
                              mutate(ethnicity = .x)) %&gt;% 
@@ -550,8 +557,8 @@ for(Boroughname in unique(ethnic_data$name)){
   london_df = rbind(london_df, Borough_coords)
 }</code></pre>
 </div>
-<div id="transform-the-coordinates-into-the-4362-crs" class="section level3">
-<h3>2.3 Transform the coordinates into the 4362 CRS</h3>
+<div id="transform-the-coordinates-into-the-4326-crs" class="section level3">
+<h3>2.3 Transform the coordinates into the 4326 CRS</h3>
 <pre class="r"><code># --- Make dataframe into an sf object (by combining lon and lat into a geometry column) --- 
 london_df &lt;- st_as_sf(london_df, coords = c(&quot;lon&quot;, &quot;lat&quot;), crs= 27700)
 
