@@ -36,6 +36,7 @@ install.packages("raster")
 The data was extracted from several sources, to which references are provided below: 
 
 **London**
+
 This project contains Ordnance Survey data © Crown copyright and database right 2011.  
 This project contains National Statistics data © Crown copyright and database right 2011.  
 
