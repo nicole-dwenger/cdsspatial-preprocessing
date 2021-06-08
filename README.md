@@ -2,8 +2,6 @@
 
 [Description](#descripton) | [Content](#content) | [Reproducability](reproducability) | [Data Sources](#data-sources) | [License](#license) | [Contact](#contact)
 
----
-
 ## Description
 This repository contains scripts and data, used for pre processing spatial and attribute data for the boroughs in London and Bezirke in Berlin. The preprocessed data is used as input for a Shiny App, which can be found under the following link: 
 https://cds-spatial.shinyapps.io/finding-home/ 
@@ -37,7 +35,7 @@ install.packages("raster")
 ### Data Sources
 The data was extracted from several sources, to which references are provided below: 
 
-##### London 
+**London**
 This project contains Ordnance Survey data © Crown copyright and database right 2011.  
 This project contains National Statistics data © Crown copyright and database right 2011.  
 
@@ -56,7 +54,7 @@ https://www.ons.gov.uk/peoplepopulationandcommunity/housing/adhocs/12871privaere
 - UCL (on behalf of Greater London Authority), 2014. London Output Area Classification [Data Set]. Retrieved May 2021, from
 https://data.london.gov.uk/dataset/london-area-classification. Licensed under CC.
  
-##### Berlin
+**Berlin**
 
 - Amt für Statistik Berlin-Brandenburg (2015a). Lebensweltlich orientierte Räume (LOR)-Planungsräume [Data Set].  
 Retrieved May 2021, through FIS-Broker, from https://fbinter.stadt-berlin.de/fb/index.jsp. Licensed under CC BY-SA 3.0 DE
@@ -67,7 +65,7 @@ Retrieved May 2021, through FIS-Broker, from https://fbinter.stadt-berlin.de/fb/
 - Geoportal Berlin (2019). Wohnatlas Berlin - Angebotsmieten 2018 (in EUR/m² monatlich, netto kalt). [Data Set]]. Retrieved May 2021, through FIS-Broker, https://www.stadtentwicklung.berlin.de/wohnen/wohnatlas/index.shtml. Licensed under Data licence Germany – attribution – Version 2.0 
 - Polizei Berlin (2020). Polizeiliche Kriminalstatistik [Data Set]. Retrieved May 2021 from https://daten.berlin.de/datensaetze/kriminalitätsatlas-berlin. Licensed under CC BY-SA 3.0 DE.
 
-##### Global
+**Global**
 
 - © European Union, Copernicus Land Monitoring Service, European Environment Agency (EEA) (2018a). High Resolution Layer: Imperviousness Density (IMD) 2018 [Data Set]. Retrieved May 2021, from https://land.copernicus.eu/pan-european/high-resolution-layers/imperviousness/statusmaps/imperviousness-density-2018?tab=metadata. Licensed under Copernicus data and information policy Regulation (EU).
 - © European Union, Copernicus Land Monitoring Service, European Environment Agency (EEA) (2018b). High Resolution Layer: Tree Cover Density (TCD) 2018 [Data Set]. Retrieved from May 2021, from https://land.copernicus.eu/pan-european/high-resolution-layers/forests/tree-cover-denity/status-maps/tree-cover-density-2018?tab=mapview. Licensed under Copernicus data and information policy Regulation (EU)
