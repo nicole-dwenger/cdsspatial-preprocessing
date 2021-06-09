@@ -26,6 +26,20 @@ library(here)
 ```{r}
 #Create a bounding box
 bb <- getbb('berlin de', format_out = 'polygon')[1]
+
+# Convert for plot, not possible in pdf
+bb_for_plot = bb[[1]] %>% as.data.frame()
+colnames(bb_for_plot) = c("lng", "lat")
+
+# Turn to polygon
+bb_for_plot = bb_for_plot %>% st_as_sf(coords = c("lng", "lat"), crs = 4326) %>%
+  summarise(geometry = st_combine(geometry)) %>%
+  st_cast("POLYGON")
+
+# Plot the bounding box to see if it fits, looks good.
+leaflet() %>%
+  addProviderTiles(providers$OpenStreetMap) %>%
+  addPolygons(data=bb_for_plot)
 ```
 
 ### 1.3. Loading the Berlin Borough geometries 
@@ -107,6 +121,8 @@ raw_museums <- opq(bbox = bb) %>%
 museums = get_culture_locations(raw_museums, crs_de, "museum", "Museum")
 # Check crs
 st_crs(museums)$input
+# Print how many were found
+paste("Number of museums in Berlin:", nrow(museums))
 ```
 
 ### 2.3. Theatres 
@@ -122,6 +138,8 @@ raw_theatres <- opq(bbox = bb) %>%
 theatres = get_culture_locations(raw_theatres, crs_de, "theatre", "Theatre")
 # Check crs
 st_crs(theatres)$input
+# Print how many were found
+paste("Number of theatres in Berlin:", nrow(theatres))
 ```
 
 ### 2.4. Nightclubs
@@ -137,6 +155,8 @@ raw_nightclubs <- opq(bbox = bb) %>%
 nightclubs = get_culture_locations(raw_nightclubs, crs_de, "nightlife", "Nightclub")
 # Check crs
 st_crs(nightclubs)$input
+# Print how many were found
+paste("Number of nightclubs in Berlin:", nrow(nightclubs))
 ```
 
 ### 2.5. Bars 
@@ -152,6 +172,8 @@ raw_bars <- opq(bbox = bb) %>%
 bars = get_culture_locations(raw_bars, crs_de, "nightlife", "Bar")
 # Check crs
 st_crs(bars)$input
+# Print how many were found
+paste("Number of bars in Berlin:", nrow(bars))
 ```
 
 ### 2.6. Pubs 
@@ -167,6 +189,8 @@ raw_pubs <- opq(bbox = bb) %>%
 pubs = get_culture_locations(raw_pubs, crs_de, "nightlife", "Pub")
 # Check crs
 st_crs(pubs)$input
+# Print how many were found
+paste("Number of pubs in Berlin:", nrow(pubs))
 ```
 
 ### 2.7. Join all locations together and save
@@ -195,6 +219,9 @@ for (unqiue_type in unique(culture_locations_proj$type)){
   # Cdd counts to the column with column name
   culture_counts[column_name] = counts
 }
+
+# Print column names
+colnames(culture_counts)
 
 # Drop the geometry column 
 culture_counts_csv <- st_drop_geometry(culture_counts)
@@ -289,6 +316,8 @@ raw_buddhist <- opq(bbox = bb) %>%
 buddhist = get_religion_locations(raw_buddhist, crs_de, "buddhist")
 # Check crs
 st_crs(buddhist)$input
+# Print how many were found
+paste("Number of buddhist PoW for Berlin:", nrow(buddhist))
 ```
 
 ### 3.3. Hindu 
@@ -304,6 +333,8 @@ raw_hindu <- opq(bbox = bb) %>%
 hindu = get_religion_locations(raw_hindu, crs_de, "hindu")
 # Check crs
 st_crs(hindu)$input
+# Print how many were found
+paste("Number of hindu PoW for Berlin:", nrow(hindu))
 ```
 
 ### 3.4. Jewish
@@ -319,6 +350,8 @@ raw_jewish <- opq(bbox = bb) %>%
 jewish = get_religion_locations(raw_jewish, crs_de, "jewish")
 # Check crs
 st_crs(jewish)$input
+# Print how many were found
+paste("Number of jewish PoW for Berlin:", nrow(jewish))
 ```
 
 ### 3.5. Muslim
@@ -334,6 +367,8 @@ raw_muslim = opq(bbox = bb) %>%
 muslim = get_religion_locations(raw_muslim, crs_de, "muslim")
 # Check crs
 st_crs(muslim)$input
+# Print how many were found
+paste("Number of muslim PoW for Berlin:", nrow(muslim))
 ```
 
 ### 3.6. Sikh
@@ -349,7 +384,8 @@ raw_sikh = opq(bbox = bb) %>%
 sikh = get_religion_locations(raw_sikh, crs_de, "sikh")
 # Check crs
 st_crs(sikh)$input
-# NONE FOUND
+# Print how many were found
+paste("Number of sikh PoW for Berlin:", nrow(sikh))
 ```
 
 ### 3.7. Protestant
@@ -384,6 +420,8 @@ for (denomination in protestant_denominations){
 
 # Keep only the unique ones after getting them from all denominations
 protestant = protestant %>% distinct(., name, .keep_all=T)
+# Print how many were found
+paste("Number of protestant PoW for Berlin:", nrow(protestant))
 ```
 
 ### 3.8. Chatholic 
@@ -416,6 +454,8 @@ for (denomination in catholic_denominations){
 
 # Keep only the unqiue ones
 catholic = catholic %>% distinct(., name, .keep_all=T)
+# Print how many were found
+paste("Number of catholic PoW for Berlin:", nrow(catholic))
 ```
 
 ### 3.9. Bind all religions together 
@@ -440,6 +480,9 @@ for (unqiue_religion in unique(religion_locations_proj$religion)){
   column_name = paste0("n_", unqiue_religion)
   religion_counts[column_name] = counts
 }
+
+# Print column names
+colnames(religion_counts)
 
 # Drop the geometry column 
 religion_counts_csv <- st_drop_geometry(religion_counts)
