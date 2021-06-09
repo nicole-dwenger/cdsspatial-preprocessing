@@ -2,7 +2,7 @@
 title: "London Preprocessing"
 author: "Nicole Dwenger and Orla Mallon"
 date: "2021/06/01"
-output: html_document
+output: pdf_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -274,7 +274,7 @@ rent_2b = rent_raw %>% filter(`Bedroom Category` == "Two Bedrooms") %>%
 ```
 
 ## 9. Green Cover (Raster)
-The aim was a value of mean percentage of green cover for each of the boroughs. Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of green cover on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered London were found, loaded and merged into one raster file. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (green cover percentage) for each of the boroughs. Note that here some of the code is commented out, to be able to knit the document. 
+The aim was a value of mean percentage of green cover for each of the boroughs. Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of green cover on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered London were found, loaded and merged into one raster file. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (green cover percentage) for each of the boroughs. Note that here some of the code is commented out, to be able to knit the document. If you are running the code, a warning message might occur about the datum and projection. This was not deemed to have an affect on results, and thus ignored. You can read more about the warning here: https://stackoverflow.com/questions/63374488/since-update-of-sp-package-i-get-a-warning-by-calling-a-spcrs-definition. 
 
 - Data Source: https://land.copernicus.eu/pan-european/high-resolution-layers/forests/tree-cover-density/status-maps/tree-cover-density-2018
 ```{r treecover, warning=FALSE}
@@ -340,7 +340,7 @@ treecover = readRDS(here("london", "preprocessed_data", "london_tree_extracted.r
 ```
 
 ## 10. Imperviousness (Raster)
-The aim was a value of mean percentage of imperviousness for each of the boroughs. Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of imperviousness on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered London were found, loaded and merged into one raster file. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (imperviousness percentage) for each of the boroughs. Note that here some of the code is commented out, to be able to knit the document. 
+The aim was a value of mean percentage of imperviousness for each of the boroughs. Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of imperviousness on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered London were found, loaded and merged into one raster file. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (imperviousness percentage) for each of the boroughs. Note that here some of the code is commented out, to be able to knit the document. This was not deemed to have an affect on results, and thus ignored. You can read more about the warning here: https://stackoverflow.com/questions/63374488/since-update-of-sp-package-i-get-a-warning-by-calling-a-spcrs-definition. 
 
 - Source: https://land.copernicus.eu/pan-european/high-resolution-layers/imperviousness/status-maps/imperviousness-density-2018
 ```{r imperviousness, warning=FALSE}

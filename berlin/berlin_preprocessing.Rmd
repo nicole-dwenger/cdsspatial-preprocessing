@@ -2,7 +2,7 @@
 title: "Berlin Preprocessing"
 author: "Nicole Dwenger and Orla Mallon"
 date: "2021/06/01"
-output: pdf_document
+output: html_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -296,7 +296,7 @@ rent = left_join(miete, prog, "prog_name") %>%
 ```
 
 ## 9. Tree Cover (Raster)
-The aim was a value of mean percentage of green cover for each of the Bezirke Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of green cover on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered Berlin were found and loaded. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (green cover percentage) for each of the Bezirke Note that here some of the code is commented out, to be able to knit the document. 
+The aim was a value of mean percentage of green cover for each of the Bezirke Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of green cover on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered Berlin were found and loaded. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (green cover percentage) for each of the Bezirke Note that here some of the code is commented out, to be able to knit the document. If you are running the code, a warning message might occur about the datum and projection. This was not deemed to have an affect on results, and thus ignored. You can read more about the warning here: https://stackoverflow.com/questions/63374488/since-update-of-sp-package-i-get-a-warning-by-calling-a-spcrs-definition. 
 
 - Data source: https://land.copernicus.eu/pan-european/high-resolution-layers/forests/tree-cover-density/status-maps/tree-cover-density-2018
 ```{r treecover, warning=FALSE}
@@ -349,7 +349,7 @@ treecover = readRDS(here("berlin", "preprocessed_data", "berlin_tree_extracted.r
 ```
 
 ## 10. Imperviousness (Raster)
-The aim was a value of mean percentage of imperviousness for each of the Bezrike Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of imperviousness on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered Berlin were found and loaded. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (imperviousness percentage) for each of the Bezirke. Note that here some of the code is commented out, to be able to knit the document. 
+The aim was a value of mean percentage of imperviousness for each of the Bezrike Thus, we extracted raster data from the Corpernicus Land Monitoring Service, which contains percentages of imperviousness on a high resolution. The data is split into tiles. Thus, the relevant tiles which covered Berlin were found and loaded. Then, we transform the vector data of the boroughs to the crs of the raster data, we mask and crop the raster data using the transformed vector data, and lastly extract mean values of the raster data (imperviousness percentage) for each of the Bezirke. Note that here some of the code is commented out, to be able to knit the document.If you are running the code, a warning message might occur about the datum and projection. This was not deemed to have an affect on results, and thus ignored. You can read more about the warning here: https://stackoverflow.com/questions/63374488/since-update-of-sp-package-i-get-a-warning-by-calling-a-spcrs-definition. 
 
 - Data source: https://land.copernicus.eu/pan-european/high-resolution-layers/imperviousness/status-maps/imperviousness-density-2018
 ```{r imperv, warning=FALSE}
