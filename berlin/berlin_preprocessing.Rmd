@@ -2,7 +2,7 @@
 title: "Berlin Preprocessing"
 author: "Nicole Dwenger and Orla Mallon"
 date: "2021/06/01"
-output: html_document
+output: pdf_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -77,10 +77,10 @@ berlin_geo = berlin_proj %>%
   dplyr::select("name" = Gemeinde_n,
                 "area_ha" = area_ha,
                 "area_km2" = area_km2,
-                "center_coords" = center_coords, # coordinates in 4326, but not "geometry" of sf object
-                "geometry" = geometry) # coordinates in 4326 for boroughs, "gemoetry" of sf object
+                "center_coords" = center_coords, # coordinates, but not "geometry" of sf object
+                "geometry" = geometry) # coordinates in 4326 for boroughs, "geometry" of sf object
 
-# Separately also transforming the centroids again
+# Separately also transforming the centroids again, the above step only transformed the "geometry"
 berlin_geo$center_coords = st_transform(berlin_geo$center_coords, 4326)
 
 # Checking CRS of center coordinates again

@@ -487,10 +487,10 @@ berlin_geo = berlin_proj %&gt;%
   dplyr::select(&quot;name&quot; = Gemeinde_n,
                 &quot;area_ha&quot; = area_ha,
                 &quot;area_km2&quot; = area_km2,
-                &quot;center_coords&quot; = center_coords, # coordinates in 4326, but not &quot;geometry&quot; of sf object
-                &quot;geometry&quot; = geometry) # coordinates in 4326 for boroughs, &quot;gemoetry&quot; of sf object
+                &quot;center_coords&quot; = center_coords, # coordinates, but not &quot;geometry&quot; of sf object
+                &quot;geometry&quot; = geometry) # coordinates in 4326 for boroughs, &quot;geometry&quot; of sf object
 
-# Separately also transforming the centroids again
+# Separately also transforming the centroids again, the above step only transformed the &quot;geometry&quot;
 berlin_geo$center_coords = st_transform(berlin_geo$center_coords, 4326)
 
 # Checking CRS of center coordinates again

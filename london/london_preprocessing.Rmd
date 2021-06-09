@@ -2,7 +2,7 @@
 title: "London Preprocessing"
 author: "Nicole Dwenger and Orla Mallon"
 date: "2021/06/01"
-output: pdf_document
+output: html_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -70,10 +70,10 @@ london_geo = london_raw %>%
   dplyr::select("name" = NAME,
                 "area_ha" = area_ha,
                 "area_km2" = area_km2,
-                "center_coords" = center_coords, 
-                "geometry" = geometry) # coordinates in 4326 for boroughs, "gemoetry" of sf object
+                "center_coords" = center_coords, # coordinates of centroids
+                "geometry" = geometry) # coordinates in 4326 for boroughs, "geometry" of sf object
 
-# Also transforming the center coordinates into 4326
+# Also transforming the center coordinates into 4326, the above step did only transformed the "geometry"
 london_geo$center_coords = st_transform(london_geo$center_coords, crs = 4326)
 
 # Checking CRS of center coordinates again
