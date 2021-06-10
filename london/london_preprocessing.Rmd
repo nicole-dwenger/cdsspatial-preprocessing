@@ -2,7 +2,7 @@
 title: "London Preprocessing"
 author: "Nicole Dwenger and Orla Mallon"
 date: "2021/06/01"
-output: html_document
+output: pdf_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -157,7 +157,7 @@ culture = read.csv(here("london", "preprocessed_data", "london_culture_counts.cs
 ```
 
 ## 6. Travel Time 
-Here, we extract transit travel times from Google Maps, using the gmapsdistance package. We decided to define a set of points of interests of train stations and airports, and calcualte the time it takes to get from these POI to each of centroids of the boroughs. To get the data, it requires coordiantes for "origin" and coordinates for "destination" in the format lat+lng, and in the CRS that Google Maps required the coordinates to be in (4326). The data is extracted for using transit, for UCT 7.00 (which is 8.00) in London. The extracted data in seconds is converted to minutes and stored in a dataframe. 
+Here, we extract transit travel times from Google Maps, using the gmapsdistance package, and the Google Maps Distance Matrix API. We decided to define a set of points of interests of train stations and airports, and calcualte the time it takes to get from the centroids of districts to these POI. To get the data, it requires coordiantes for "origin" and coordinates for "destination" in the format lat+lng, and in the CRS that Google Maps required the coordinates to be in (4326). The data is extracted for using transit, for UCT 7.00 (which is 8.00) in London. The extracted data in seconds is converted to minutes and stored in a dataframe. As it is not allowed to create content with data extracted from Google Maps, the data should not be further used, read more here: https://cloud.google.com/maps-platform/terms/.
 
 - For more info on the gmapsdistance package: https://github.com/rodazuero/gmapsdistance 
 ```{r travel, eval=FALSE}

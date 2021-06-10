@@ -2,7 +2,7 @@
 title: "Berlin Preprocessing"
 author: "Nicole Dwenger and Orla Mallon"
 date: "2021/06/01"
-output: pdf_document
+output: html_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -170,7 +170,7 @@ culture = read.csv(here("berlin", "preprocessed_data", "berlin_culture_counts.cs
 ```
 
 ## 6. Transit Travel Time
-Here, we extract transit travel times from Google Maps, using the gmapsdistance package. We decided to define a set of points of interests of train stations and airports, and calculate the time it takes to get from these POI to each of centroids of the boroughs. To get the data, it requires coordinates for "origin" and coordinates for "destination" in the format lat+lng, and in the CRS that Google Maps required the coordinates to be in (4326). The data is extracted for using transit, for UCT 6.00 (which is 8.00) in Berlin The extracted data in seconds is converted to minutes and stored in a dataframe. 
+Here, we extract transit travel times from Google Maps, using the gmapsdistance package, and the Google Maps Distance Matrix API. We decided to define a set of points of interests of train stations and airports, and calculate the time it takes to travel from the district centroids to these POI. To get the data, it requires coordinates for "origin" and coordinates for "destination" in the format lat+lng, and in the CRS that Google Maps required the coordinates to be in (4326). The data is extracted for using transit, for UCT 6.00 (which is 8.00) in Berlin The extracted data in seconds is converted to minutes and stored in a dataframe. As it is not allowed to create content with data extracted from Google Maps, the data should not be further used, read more here: https://cloud.google.com/maps-platform/terms/.
 
 - For more info on the gmapsdistance package: https://github.com/rodazuero/gmapsdistance 
 ```{r eval=FALSE}
