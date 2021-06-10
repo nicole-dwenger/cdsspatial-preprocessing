@@ -7,10 +7,10 @@ This repository contains scripts and data, used for pre processing spatial and a
 https://cds-spatial.shinyapps.io/finding-home/ 
 
 ## Content
-This repository contains several corresponding scripts for pre processing data of London and Berlin, which are stored in their corresponding directories. However, scripts the scripts for the two cities fulfill similar functions, as described below: 
+This repository contains several corresponding scripts for pre processing data of London and Berlin, which are stored in their corresponding directories. However, scripts for the two cities fulfill similar functions, as described below: 
 
 ### Dot Density Scripts 
-Scripts called `{city}_dot_density.rmd` were used to sample dots based on population data of ethnicities in output areas of London, or based on population data of place of origin in Planungsräume of Berlin. The process was inspired by this [tutorial](https://www.blog.cultureofinsight.com/2017/06/building-dot-density-maps-with-u k-census-data-in-r/).
+Scripts called `{city}_dot_density.rmd` were used to sample dots based on population data of ethnicities in output areas of London, or based on population data of place of origin in Planungsräume of Berlin. The process was inspired by this [tutorial](https://www.blog.cultureofinsight.com/2017/06/building-dot-density-maps-with-uk-census-data-in-r/).
 The raw data can be found in `london/raw_data/ethnicity` and `berlin/raw_data/country_of_origin`, and pre-processed data is stored as `{city}/preprocessed_data/{city}_dot_coordinates.csv/rds` and `{city}/preprocessed_data/{city}_precentages.csv` for each city.
 
 ### OSM - Culture and Religion Scripts 
@@ -20,7 +20,7 @@ Scripts called `{city}_osm_culture_religion.Rmd`, extract locations of cultural 
 Scripts called `{city}_preprocessing.Rmd` preprocess all relevant variables for the two cities, for which raw data is stored in corresponding `{city}/raw_data/` directories. Further, it loads the pre-processed data of Dot Density Scripts and OSM - Culture and Religion Scripts. In a last step, it joins all pre-processed data to a common data frame, stored in `london/preprocessed_data/london.csv`/ `london/preprocessed_data/london.rds` and `berlin/preprocessed_data/berlin.csv`/ `berlin/preprocessed_data/berlin.rds`.  
 
 ## Reproducability 
-The scripts were developed on macOS 11.4, using R Version 4.0.2 and RStudio 1.3.1073. Detailed information about the used packages and their versions are stored in a file called `sessionInfo.txt`. If you which to clone files to run them locally, you can run the following commands in the terminal: 
+The scripts were developed on macOS 11.4, using R Version 4.0.2 and RStudio 1.3.1073. Detailed information about the used packages and their versions are stored in a file called `sessionInfo.txt`. If you wish to clone files to run them locally, you can run the following commands in the terminal: 
 
 ```bash
 git clone https://github.com/nicole-dwenger/cdsspatial-preprocessing.git
